@@ -81,7 +81,8 @@ final class MovieQuizViewController: UIViewController {
             imageView.layer.borderWidth = 8 // толщина рамки
             imageView.layer.borderColor = UIColor.ypRed.cgColor // делаем рамку красной
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {[weak self] in
+            guard let self = self else { return }
             // код, который мы хотим вызвать через 1 секунду
             self.showNextQuestionOrResults()
         }
@@ -105,7 +106,8 @@ final class MovieQuizViewController: UIViewController {
                 title: result.title,
                 message: result.text,
                 preferredStyle: .alert)
-        let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
+        let action = UIAlertAction(title: result.buttonText, style: .default) {[weak self] _ in
+                guard let self = self else { return }
                 self.currentQuestionIndex = 0
                 self.correctAnswers = 0
                 let firstQuestion = self.questions[self.currentQuestionIndex]
