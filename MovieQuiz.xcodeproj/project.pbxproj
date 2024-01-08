@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3C82D5FD2B4BE6B80051E233 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3C82D5FB2B4BE6B80051E233 /* YS Display-Bold.ttf */; };
-		3C82D5FE2B4BE6B80051E233 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3C82D5FC2B4BE6B80051E233 /* YS Display-Medium.ttf */; };
+		3C1ACB932B4C96F900459A6B /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3C1ACB912B4C96F900459A6B /* YS Display-Bold.ttf */; };
+		3C1ACB942B4C96F900459A6B /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3C1ACB922B4C96F900459A6B /* YS Display-Medium.ttf */; };
 		AD1ABAB22831907B00B3E448 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB12831907B00B3E448 /* AppDelegate.swift */; };
 		AD1ABAB42831907B00B3E448 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB32831907B00B3E448 /* SceneDelegate.swift */; };
 		AD1ABAB62831907B00B3E448 /* MovieQuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB52831907B00B3E448 /* MovieQuizViewController.swift */; };
@@ -21,8 +21,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3C82D5FB2B4BE6B80051E233 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
-		3C82D5FC2B4BE6B80051E233 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
+		3C1ACB912B4C96F900459A6B /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
+		3C1ACB922B4C96F900459A6B /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 		AD1ABAAE2831907B00B3E448 /* MovieQuiz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieQuiz.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD1ABAB12831907B00B3E448 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AD1ABAB32831907B00B3E448 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -47,21 +47,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3C39D0052B445BC4009CD2ED /* Fonts */ = {
+		3C1ACB902B4C96F900459A6B /* MovieQuizFonts */ = {
 			isa = PBXGroup;
 			children = (
-				3C82D5FA2B4BE6B80051E233 /* YS fonts */,
+				3C1ACB912B4C96F900459A6B /* YS Display-Bold.ttf */,
+				3C1ACB922B4C96F900459A6B /* YS Display-Medium.ttf */,
 			);
-			path = Fonts;
-			sourceTree = "<group>";
-		};
-		3C82D5FA2B4BE6B80051E233 /* YS fonts */ = {
-			isa = PBXGroup;
-			children = (
-				3C82D5FB2B4BE6B80051E233 /* YS Display-Bold.ttf */,
-				3C82D5FC2B4BE6B80051E233 /* YS Display-Medium.ttf */,
-			);
-			name = "YS fonts";
+			path = MovieQuizFonts;
 			sourceTree = "<group>";
 		};
 		8F4738322848DE2A005DF65E /* Presentation */ = {
@@ -76,7 +68,7 @@
 		8F4738332848DE46005DF65E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				3C39D0052B445BC4009CD2ED /* Fonts */,
+				3C1ACB902B4C96F900459A6B /* MovieQuizFonts */,
 				AD1ABABC2831907F00B3E448 /* LaunchScreen.storyboard */,
 				AD1ABABA2831907F00B3E448 /* Assets.xcassets */,
 				AD1ABABF2831907F00B3E448 /* Info.plist */,
@@ -182,10 +174,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD1ABABE2831907F00B3E448 /* LaunchScreen.storyboard in Resources */,
-				3C82D5FD2B4BE6B80051E233 /* YS Display-Bold.ttf in Resources */,
 				AD1ABABB2831907F00B3E448 /* Assets.xcassets in Resources */,
 				AD1ABAB92831907B00B3E448 /* Main.storyboard in Resources */,
-				3C82D5FE2B4BE6B80051E233 /* YS Display-Medium.ttf in Resources */,
+				3C1ACB932B4C96F900459A6B /* YS Display-Bold.ttf in Resources */,
+				3C1ACB942B4C96F900459A6B /* YS Display-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
