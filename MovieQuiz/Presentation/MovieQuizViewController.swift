@@ -1,59 +1,27 @@
 import UIKit
-
-struct QuizQuestion {
-  // строка с названием фильма,
-  // совпадает с названием картинки афиши фильма в Assets
-  let image: String
-  // строка с вопросом о рейтинге фильма
-  let text: String
-  // булевое значение (true, false), правильный ответ на вопрос
-  let correctAnswer: Bool
-}
-struct QuizResultsViewModel {
-  // строка с заголовком алерта
-  let title: String
-  // строка с текстом о количестве набранных очков
-  let text: String
-  // текст для кнопки алерта
-  let buttonText: String
-}
-struct QuizStepViewModel {
-  // картинка с афишей фильма с типом UIImage
-  let image: UIImage
-  // вопрос о рейтинге квиза
-  let question: String
-  // строка с порядковым номером этого вопроса (ex. "1/10")
-  let questionNumber: String
-}
 final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var imageView: UIImageView!
     private var currentQuestionIndex = 0
-    private let questions: [QuizQuestion] = [
-        QuizQuestion(image:"The Godfather", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
-        QuizQuestion(image:"The Dark Knight", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
-        QuizQuestion(image:"Kill Bill", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
-        QuizQuestion(image:"The Avengers", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
-        QuizQuestion(image:"Deadpool", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
-        QuizQuestion(image:"The Green Knight", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
-        QuizQuestion(image:"Old", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: false),
-        QuizQuestion(image:"The Ice Age Adventures of Buck Wild", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: false),
-        QuizQuestion(image:"Tesla", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: false),
-        QuizQuestion(image:"Vivarium", text: "Рейтинг этого фильма больше чем 6?", correctAnswer: false)]
+    private let questionsAmount: Int = 10
+    private var questionFactory: QuestionFactory = QuestionFactory()
+    private var currentQuestion: QuizQuestion?
     private var correctAnswers = 0
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        let currentQuestion = questions[currentQuestionIndex]
-        let firstStep = convert(model: currentQuestion)
-        show(quiz: firstStep)
+        if let firstQuestion = questionFactory.requestNextQuestion() {
+            currentQuestion = firstQuestion
+            let viewModel = convert(model: firstQuestion)
+            show(quiz: viewModel)
+        }
     }
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        let filmName = model.image
-        let numOfQuestion = String(currentQuestionIndex + 1) + "/10"
-        var img = UIImage(named: filmName)
-        return QuizStepViewModel.init(image: img ?? UIImage(), question: model.text, questionNumber: numOfQuestion)
+        return QuizStepViewModel(
+            image: UIImage(named: model.image) ?? UIImage(),
+            question: model.text,
+            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
     private func show(quiz step: QuizStepViewModel) {
         imageView.layer.borderColor = UIColor.clear.cgColor
@@ -62,11 +30,19 @@ final class MovieQuizViewController: UIViewController {
         counterLabel.text = step.questionNumber
     }
     @IBAction private func yesButtonClicked(_ sender: Any) {
-        showAnswerResult(isCorrect: questions[currentQuestionIndex].correctAnswer == true)
+        guard let currentQuestion = currentQuestion else {
+            return
+        }
+        let givenAnswer = true
+        showAnswerResult(isCorrect: currentQuestion.correctAnswer == givenAnswer)
         print("YES")
     }
     @IBAction private func noButtonClicked(_ sender: Any) {
-        showAnswerResult(isCorrect: questions[currentQuestionIndex].correctAnswer == false)
+        guard let currentQuestion = currentQuestion else {
+            return
+        }
+        let givenAnswer = false
+        showAnswerResult(isCorrect: currentQuestion.correctAnswer == givenAnswer)
         print("NO")
     }
     private func showAnswerResult(isCorrect: Bool) {
@@ -88,16 +64,18 @@ final class MovieQuizViewController: UIViewController {
         }
     }
     private func showNextQuestionOrResults() {
-        if currentQuestionIndex == questions.count - 1 { // 1
+        if currentQuestionIndex == questionsAmount - 1 { // 1
             let lastModel = QuizResultsViewModel(title: "Раунд окончен!", text: "Ваш результат: " + String(correctAnswers) + "/10", buttonText: "Сыграть еще раз")
             show(quiz: lastModel)
             // идём в состояние "Результат квиза"
         } else { // 2
             currentQuestionIndex += 1
-            let currentQuestion = questions[currentQuestionIndex]
-            let step = convert(model: currentQuestion)
-            //imageView.layer.borderColor = UIColor.clear.cgColor
-            show(quiz: step)
+            if let nextQuestion = questionFactory.requestNextQuestion() {
+                currentQuestion = nextQuestion
+                let viewModel = convert(model: nextQuestion)
+
+                show(quiz: viewModel)
+            } 
             // идём в состояние "Вопрос показан"
         }
     }
@@ -110,9 +88,12 @@ final class MovieQuizViewController: UIViewController {
                 guard let self = self else { return }
                 self.currentQuestionIndex = 0
                 self.correctAnswers = 0
-                let firstQuestion = self.questions[self.currentQuestionIndex]
+            if let firstQuestion = self.questionFactory.requestNextQuestion() {
+                self.currentQuestion = firstQuestion
                 let viewModel = self.convert(model: firstQuestion)
+
                 self.show(quiz: viewModel)
+            }
             }
             
             alert.addAction(action)
