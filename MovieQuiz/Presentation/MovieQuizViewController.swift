@@ -49,7 +49,20 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             return
         }
         DispatchQueue.main.async { [weak self] in
-            self?.show(quiz: alert)
+            let newAlert = UIAlertController(
+                    title: alert.title,
+                    message: alert.message,
+                    preferredStyle: .alert)
+            let action = UIAlertAction(title: alert.buttonText, style: .default) {[weak self] _ in
+                    guard let self = self else { return }
+                    self.currentQuestionIndex = 0
+                    self.correctAnswers = 0
+                questionFactory?.requestNextQuestion()
+                }
+                
+                newAlert.addAction(action)
+                
+            self?.present(newAlert, animated: true, completion: nil)
         }
         
     }
@@ -93,22 +106,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             // идём в состояние "Вопрос показан"
         }
     }
-    private func show(quiz result: AlertModel) {
-        let alert = UIAlertController(
-                title: result.title,
-                message: result.message,
-                preferredStyle: .alert)
-        let action = UIAlertAction(title: result.buttonText, style: .default) {[weak self] _ in
-                guard let self = self else { return }
-                self.currentQuestionIndex = 0
-                self.correctAnswers = 0
-            questionFactory?.requestNextQuestion()
-            }
-            
-            alert.addAction(action)
-            
-            self.present(alert, animated: true, completion: nil)
-    }
+    
 }
     /*
  Mock-данные
