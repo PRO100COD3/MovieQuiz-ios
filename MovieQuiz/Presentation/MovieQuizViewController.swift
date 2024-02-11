@@ -9,13 +9,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     private var correctAnswers = 0
     private var presenter: AlertPresenterProtocol? = AlertPresenter()
     private var questionFactory: QuestionFactoryProtocol? = QuestionFactory()
+    private var statisticService: StatisticService?
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
+        print(FileManager.default.temporaryDirectory)
         super.viewDidLoad()
         questionFactory?.delegate = self
         questionFactory?.requestNextQuestion()
         presenter?.delegate = self
+        statisticService = StatisticServiceImplementation()
     }
     @IBAction private func yesButtonClicked(_ sender: Any) {
         guard let currentQuestion = currentQuestion else {
@@ -64,7 +67,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
                 
             self?.present(newAlert, animated: true, completion: nil)
         }
-        
     }
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
@@ -98,6 +100,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     }
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 { // 1
+            statisticService?.store(count: correctAnswers, amount: questionsAmount)
             self.presenter?.show(cAnswer: correctAnswers)
             // идём в состояние "Результат квиза"
         } else { // 2

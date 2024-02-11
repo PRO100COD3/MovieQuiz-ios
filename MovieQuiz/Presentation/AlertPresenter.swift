@@ -9,8 +9,9 @@ import Foundation
 import UIKit
 class AlertPresenter: AlertPresenterProtocol{
     weak var delegate: AlertPresenterDelegate?
+    var statistic = StatisticServiceImplementation()
     func show(cAnswer: Int) {
-        let alert = AlertModel(title: "Раунд окончен!", message: "Ваш результат: " + String(cAnswer) + "/10", buttonText: "Сыграть еще раз")
+        let alert = AlertModel(title: "Раунд окончен!", message: "Ваш результат: " + String(cAnswer) + "/10\n" + statistic.addString(), buttonText: "Сыграть еще раз")
         delegate?.showAlert(alert: alert)
     }
         //func show(quiz result: QuizResultsViewModel) {
