@@ -7,7 +7,8 @@
 
 import Foundation
 import UIKit
-public class QuizStepViewModel{
+
+struct QuizStepViewModel{
     // картинка с афишей фильма с типом UIImage
     let image: UIImage
     // вопрос о рейтинге квиза

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 struct GameRecord: Codable {
     let correct: Int
     let total: Int
@@ -135,6 +136,3 @@ class StatisticServiceImplementation: StatisticService{
         return "Количество сыгранных квизов: \(String(gamesCount))\n"+"Рекорд: \(String(bestGame.correct))/\(String(bestGame.total)) \(bestGame.date.dateTimeString)\nСредняя точность: \(String(format: "%.2f", totalAccuracy))%"
     }
 }
-
-
-

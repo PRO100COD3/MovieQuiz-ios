@@ -6,7 +6,9 @@
 //
 
 import Foundation
+
 protocol AlertPresenterProtocol{
     var delegate: AlertPresenterDelegate? {get set}
     func show(cAnswer: Int)
+    func show(alert: AlertModel)
 }

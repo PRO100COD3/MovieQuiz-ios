@@ -6,7 +6,8 @@
 //
 
 import Foundation
-class QuizResultsViewModel{
+
+struct QuizResultsViewModel{
     // строка с заголовком алерта
     let title: String
     // строка с текстом о количестве набранных очков

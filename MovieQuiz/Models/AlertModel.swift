@@ -6,7 +6,8 @@
 //
 
 import Foundation
-class AlertModel{
+
+struct AlertModel{
     var title: String
     var message: String
     var buttonText: String
@@ -18,5 +19,4 @@ class AlertModel{
         self.message = message
         self.buttonText = buttonText
     }
-    
 }
