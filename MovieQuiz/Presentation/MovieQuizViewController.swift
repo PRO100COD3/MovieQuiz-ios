@@ -8,8 +8,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet private weak var imageView: UIImageView!
     
-    private var currentQuestionIndex = 0
-    private let questionsAmount: Int = 10
+    private let movieQuizPresenter = MovieQuizPresenter()
     private var currentQuestion: QuizQuestion?
     private var correctAnswers = 0
     private var presenter: AlertPresenterProtocol? = AlertPresenter()
@@ -62,9 +61,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         hideLoadingIndicator() // скрываем индикатор загрузки
         let alert = AlertModel(title: "Ошибка", message: message, buttonText: "Попробовать еще раз")
         
-        self.currentQuestionIndex = 0
+        self.movieQuizPresenter.resetQuestionIndex()
         self.correctAnswers = 0
         self.questionFactory?.requestNextQuestion()
+        
+        questionFactory?.loadData()
         
         presenter?.show(alert: alert)
         // создайте и покажите алерт
@@ -75,7 +76,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             return
         }
         currentQuestion = question
-        let viewModel = convert(model: question)
+        let viewModel = movieQuizPresenter.convert(model: question)
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
         }
@@ -89,9 +90,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
                 title: alert.title,
                 message: alert.message,
                 preferredStyle: .alert)
+            newAlert.view.accessibilityIdentifier = "Game results"
             let action = UIAlertAction(title: alert.buttonText, style: .default) {[weak self] _ in
                 guard let self = self else { return }
-                self.currentQuestionIndex = 0
+                self.movieQuizPresenter.resetQuestionIndex()
                 self.correctAnswers = 0
                 questionFactory?.requestNextQuestion()
             }
@@ -100,13 +102,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             
             self?.present(newAlert, animated: true, completion: nil)
         }
-    }
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        return QuizStepViewModel(
-            // try, потому что загрузка данных по URL может быть и не успешной
-            image: UIImage(data: model.image) ?? UIImage(),
-            question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
     private func show(quiz step: QuizStepViewModel) {
         imageView.layer.borderColor = UIColor.clear.cgColor
@@ -137,12 +132,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         }
     }
     private func showNextQuestionOrResults() {
-        if currentQuestionIndex == questionsAmount - 1 { // 1
-            statisticService?.store(count: correctAnswers, amount: questionsAmount)
+        if movieQuizPresenter.isLastQuestion() { // 1
+            statisticService?.store(count: correctAnswers, amount: movieQuizPresenter.questionsAmount)
             self.presenter?.show(cAnswer: correctAnswers)
             // идём в состояние "Результат квиза"
         } else { // 2
-            currentQuestionIndex += 1
+            movieQuizPresenter.switchToNextQuestion()
             self.questionFactory?.requestNextQuestion()
             // идём в состояние "Вопрос показан"
         }
