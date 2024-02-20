@@ -27,5 +27,5 @@ class AlertPresenter: AlertPresenterProtocol{
             self?.delegate?.showAlert(newAlert: newAlert)
             
         }
-    }    
+    }
 }

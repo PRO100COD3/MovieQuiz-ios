@@ -161,8 +161,6 @@
 				3CD150422B5DB9AC003F683C /* QuestionFactory.swift */,
 				3CDDDD2F2B65848D0048DCB2 /* QuestionFactoryProtocol.swift */,
 				3CDDDD312B6596130048DCB2 /* QuestionFactoryDelegate.swift */,
-				3CDDDD372B6A19100048DCB2 /* AlertPresenterDelegate.swift */,
-				3CDDDD392B7397830048DCB2 /* AlertPresenterProtocol.swift */,
 				3CF21E042B782931005A9AF2 /* StatisticService.swift */,
 				3CF21E062B7D5C2C005A9AF2 /* NetworkClient.swift */,
 				3C902FD92B7EA69A004B421E /* MoviesLoader.swift */,
@@ -190,6 +188,8 @@
 				AD1ABAB52831907B00B3E448 /* MovieQuizViewController.swift */,
 				AD1ABAB72831907B00B3E448 /* Main.storyboard */,
 				3CDDDD352B6A12310048DCB2 /* AlertPresenter.swift */,
+				3CDDDD372B6A19100048DCB2 /* AlertPresenterDelegate.swift */,
+				3CDDDD392B7397830048DCB2 /* AlertPresenterProtocol.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";

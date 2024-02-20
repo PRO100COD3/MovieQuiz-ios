@@ -2,6 +2,7 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, MovieQuizViewControllerProtocol{
     
+    var alertPresenter: AlertPresenterProtocol? = AlertPresenter()
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet weak var noButton: UIButton!
@@ -10,8 +11,7 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, M
     @IBOutlet weak var imageView: UIImageView!
     
     private var presenter: MovieQuizPresenter!
-    var alertPresenter: AlertPresenterProtocol? = AlertPresenter()
-    var questionFactory: QuestionFactoryProtocol?
+    private var questionFactory: QuestionFactoryProtocol?
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
