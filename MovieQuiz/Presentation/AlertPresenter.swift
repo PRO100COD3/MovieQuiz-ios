@@ -9,14 +9,23 @@ import Foundation
 import UIKit
 
 class AlertPresenter: AlertPresenterProtocol{
-    weak var delegate: AlertPresenterDelegate?
+    var delegate: AlertPresenterDelegate?
     var statistic = StatisticServiceImplementation()
-    func show(cAnswer: Int) {
-        let alert = AlertModel(title: "Раунд окончен!", message: "Ваш результат: " + String(cAnswer) + "/10\n" + statistic.addString(), buttonText: "Сыграть еще раз")
-        delegate?.showAlert(alert: alert)
-    }
-    func show(alert: AlertModel){
-        delegate?.showAlert(alert: alert)
-    }
+    func show(alert: AlertModel, action: UIAlertAction){
+        DispatchQueue.main.async { [weak self] in
+            let message = alert.message
+            let newAlert = UIAlertController(
+                title: alert.title,
+                message: message,
+                preferredStyle: .alert)
+            newAlert.view.accessibilityIdentifier = "Game results"
+            
+            
+            newAlert.addAction(action)
+            
+            
+            self?.delegate?.showAlert(newAlert: newAlert)
+            
+        }
+    }    
 }
-

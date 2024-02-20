@@ -5,12 +5,12 @@
 //  Created by Вадим Дзюба on 20.02.2024.
 //
 
-import Foundation
+import UIKit
 
 protocol MovieQuizViewControllerProtocol: AnyObject {
-    var presenter: AlertPresenterProtocol? { get set }
+    var alertPresenter: AlertPresenterProtocol? { get set }
     func show(quiz step: QuizStepViewModel)
-    func showAlert(alert: AlertModel?)
+    func showAlert(newAlert: UIAlertController?)
     
     func highlightImageBorder(isCorrect: Bool)
     func showLoadingIndicator()

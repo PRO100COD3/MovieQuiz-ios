@@ -5,7 +5,6 @@
 //  Created by Вадим Дзюба on 20.02.2024.
 //
 
-import Foundation
 import UIKit
 
 final class MovieQuizPresenter: QuestionFactoryDelegate{
@@ -19,6 +18,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate{
     private var currentQuestionIndex: Int = 0
     private var currentQuestion: QuizQuestion?
     weak var viewController: MovieQuizViewControllerProtocol?
+    private var alertPresenter: AlertPresenterProtocol?
     private var statisticService: StatisticService
     private var questionFactory: QuestionFactoryProtocol?
     func didFailToLoadData(with error: Error) {
@@ -82,13 +82,26 @@ final class MovieQuizPresenter: QuestionFactoryDelegate{
     }
     private func showNextQuestionOrResults() {
         if isLastQuestion() { // 1
-            viewController?.presenter?.show(cAnswer: correctAnswers)
+            
+            show(cAnswer: correctAnswers)
             // идём в состояние "Результат квиза"
         } else { // 2
             self.switchToNextQuestion()
             questionFactory?.requestNextQuestion()
             // идём в состояние "Вопрос показан"
         }
+    }
+    func restartGameWithError(message:String){
+        correctAnswers = 0
+        resetQuestionIndex()
+        let alert = AlertModel(title: "Ошибка", message: message, buttonText: "Попробовать еще раз")
+        let action = UIAlertAction(title: alert.buttonText, style: .default) {[weak self] _ in
+            guard let self = self else { return }
+            restartGame()
+            questionFactory?.loadData()
+        }
+        alertPresenter?.show(alert: alert, action: action)
+        //questionFactory?.requestNextQuestion()
     }
     func restartGame(){
         correctAnswers = 0
@@ -106,9 +119,9 @@ final class MovieQuizPresenter: QuestionFactoryDelegate{
     }
     private func showStat(){
         statisticService.store(count: correctAnswers, amount: questionsAmount)
-        viewController?.presenter?.show(cAnswer: correctAnswers)
+        show(cAnswer: correctAnswers)
     }
-    func makeResultsMessage() -> String {
+    private func makeResultsMessage() -> String {
         statisticService.store(count: correctAnswers, amount: questionsAmount)
         
         let bestGame = statisticService.bestGame
@@ -126,13 +139,23 @@ final class MovieQuizPresenter: QuestionFactoryDelegate{
         return resultMessage
     }
     private func showAnswerResult(isCorrect: Bool) {
-        self.didAnswer(isCorrect: isCorrect)
+        didAnswer(isCorrect: isCorrect)
         viewController?.blockingButtons()
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {[weak self] in
             guard let self = self else { return }
             // код, который мы хотим вызвать через 1 секунду
-            self.showNextQuestionOrResults()
+            showNextQuestionOrResults()
         }
+    }
+    func show(cAnswer: Int) {
+        let alert = AlertModel(title: "Раунд окончен!", message: makeResultsMessage(), buttonText: "Сыграть еще раз")
+        let action = UIAlertAction(title: alert.buttonText, style: .default) {[weak self] _ in
+            guard let self = self else { return }
+            restartGame()
+            questionFactory?.loadData()
+        }
+        alertPresenter = viewController?.alertPresenter
+        alertPresenter?.show(alert: alert, action: action)
     }
     init(viewController: MovieQuizViewControllerProtocol) {
         self.viewController = viewController
