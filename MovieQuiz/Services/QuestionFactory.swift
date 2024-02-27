@@ -10,7 +10,6 @@ import Foundation
 class QuestionFactory: QuestionFactoryProtocol{
     private let moviesLoader: MoviesLoading
     weak var delegate: QuestionFactoryDelegate?
-    
     private var movies: [MostPopularMovie] = []
     func requestNextQuestion() {
         DispatchQueue.global().async { [weak self] in
@@ -25,6 +24,8 @@ class QuestionFactory: QuestionFactoryProtocol{
                 imageData = try Data(contentsOf: movie.resizedImageURL)
             } catch {
                 print("Failed to load image")
+                delegate?.restartGameWithError(message: "Не удалось загрузить изображение")
+                return
             }
             
             let rating = Float(movie.rating) ?? 0

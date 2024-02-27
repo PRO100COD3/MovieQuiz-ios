@@ -13,10 +13,9 @@ class AlertPresenter: AlertPresenterProtocol{
     var statistic = StatisticServiceImplementation()
     func show(alert: AlertModel, action: UIAlertAction){
         DispatchQueue.main.async { [weak self] in
-            let message = alert.message
             let newAlert = UIAlertController(
                 title: alert.title,
-                message: message,
+                message: alert.message,
                 preferredStyle: .alert)
             newAlert.view.accessibilityIdentifier = "Game results"
             

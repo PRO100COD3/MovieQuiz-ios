@@ -11,12 +11,8 @@ struct GameRecord: Codable {
     let correct: Int
     let total: Int
     let date: Date
-    func compareRecord(newRecord: GameRecord) -> Bool{
-        if newRecord.correct > correct
-        {
-            return true}
-        else{
-            return false}
+    func compareRecord(newRecord: GameRecord) -> Bool {
+        return newRecord.correct > correct
     }
 }
 protocol StatisticService{

@@ -139,7 +139,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate{
         let message = error.localizedDescription
         viewController?.showNetworkError(message: message)
     }
-    
     func restartGameWithError(message:String){
         correctAnswers = 0
         resetQuestionIndex()

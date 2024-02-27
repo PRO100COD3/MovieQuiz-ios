@@ -26,14 +26,12 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, M
         presenter.noButtonClicked()
     }
     func highlightImageBorder(isCorrect: Bool){
+        imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
+        imageView.layer.borderWidth = 8 // толщина рамки
         if(isCorrect == true){
-            imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
-            imageView.layer.borderWidth = 8 // толщина рамки
             imageView.layer.borderColor = UIColor.ypGreen.cgColor // делаем рамку зеленой
         }
         else{
-            imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
-            imageView.layer.borderWidth = 8 // толщина рамки
             imageView.layer.borderColor = UIColor.ypRed.cgColor // делаем рамку красной
         }
     }

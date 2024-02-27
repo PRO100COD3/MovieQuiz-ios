@@ -11,9 +11,6 @@ struct AlertModel{
     var title: String
     var message: String
     var buttonText: String
-    func completion(){
-        
-    }
     init(title: String, message: String, buttonText: String) {
         self.title = title
         self.message = message

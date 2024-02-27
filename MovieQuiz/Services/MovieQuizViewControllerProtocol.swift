@@ -11,7 +11,6 @@ protocol MovieQuizViewControllerProtocol: AnyObject {
     var alertPresenter: AlertPresenterProtocol? { get set }
     func show(quiz step: QuizStepViewModel)
     func showAlert(newAlert: UIAlertController?)
-    
     func highlightImageBorder(isCorrect: Bool)
     func showLoadingIndicator()
     func hideLoadingIndicator()
