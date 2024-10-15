@@ -54,11 +54,9 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate, M
         activityIndicator.stopAnimating()
     }
     func showNetworkError(message: String) {
-        hideLoadingIndicator() // скрываем индикатор загрузки
+        hideLoadingIndicator()
         presenter.restartGameWithError(message: message)
         questionFactory?.loadData()
-        
-        // создайте и покажите алерт
     }
     // MARK: - QuestionFactoryDelegate
     func showAlert(newAlert: UIAlertController?) {
